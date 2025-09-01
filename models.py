@@ -17,6 +17,8 @@ class User(Base):
 
     transactions = relationship("Transactions", back_populates="user")
     recipients = relationship("Users", secondary="transactions", back_populates="senders")
+    senders = relationship("Users", secondary="transactions", back_populates="recipients")
+    
     
 
 class Transactions(Base):
