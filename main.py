@@ -103,48 +103,6 @@ def create_transaction(transaction: TransactionSchema, db: Session = Depends(get
     return transaction
 
 
-
-@app.post("/transfer")
-def create_transfer(transfer: TransferSchema, db: Session = Depends(get_db)):
-    sender = db.query(User).filter(User.id == transfer.sender_user_id).first()
-    recipient = db.query(User).filter(User.id == transfer.recipient_user_id).first()
-    if not sender or not recipient:
-        raise HTTPException(status_code=404, detail="User not found")
-    if sender.balance < transfer.amount:
-        raise HTTPException(status_code=400, detail="Insufficient balance")
-    sender_transaction = Transaction(
-        user_id=sender.id,
-        transaction_type="TRANSFER_OUT",
-        amount=transfer.amount,
-        description=transfer.description
-    )
-    db.add(sender_transaction)
-    db.commit()
-    db.refresh(sender_transaction)
-    recipient_transaction = Transaction(
-        user_id=recipient.id,
-        transaction_type="TRANSFER_IN",
-        amount=transfer.amount,
-        description=transfer.description
-    )
-    db.add(recipient_transaction)
-    db.commit()
-    db.refresh(recipient_transaction)
-    sender.balance -= transfer.amount
-    recipient.balance += transfer.amount
-    db.commit()
-    return {
-        "transfer_id": "unique_transfer_id",
-        "sender_transaction_id": sender_transaction.id,
-        "recipient_transaction_id": recipient_transaction.id,
-        "amount": transfer.amount,
-        "sender_new_balance": sender.balance,
-        "recipient_new_balance": recipient.balance,
-        "status": "completed"
-    }
-
-
-
 @app.get("/transfer/{transfer_id}")
 def get_transfer(transfer_id: str, db: Session = Depends(get_db)):
     transfer = db.query(Transfer).filter(Transfer.id == transfer_id).first()
