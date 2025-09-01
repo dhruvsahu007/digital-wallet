@@ -18,19 +18,30 @@ class UserSchema(BaseModel):
 
 
 class TransactionSchema(BaseModel):
+    user_id: int
+    transaction_type: str
+    amount: float
+    description: str
+    reference_transaction_id: int = None
+    recipient_user_id: int = None
+
+    class Config:
+        from_attributes = True
+        arbitrary_types_allowed = True
+
+
+class TransactionResponseSchema(BaseModel):
     id: int
     user_id: int
     transaction_type: str
-    amount: int
+    amount: float
     description: str
-    reference_transaction_id: int
-    recipient_id: int
+    reference_transaction_id: int = None
+    recipient_user_id: int = None
     created_at: datetime
-    updated_at: datetime
-
 
     class Config:
-        orm_mode = True 
+        from_attributes = True
         arbitrary_types_allowed = True
 
 

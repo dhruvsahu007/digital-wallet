@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey,DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
+from sqlalchemy.sql import func
 from database import Base
 
 class User(Base):
@@ -8,9 +9,9 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
     phone_number = Column(Integer)
-    balance = Column(Integer, default=0)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    balance = Column(Float, default=0.0)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
 class Transactions(Base):
     __tablename__ = "transactions"
@@ -18,11 +19,11 @@ class Transactions(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     transaction_type = Column(String)
-    amount = Column(Integer)
+    amount = Column(Float)
     description = Column(String)
-    reference_transaction_id = Column(Integer, ForeignKey("transactions.id"))
-    recipient_id = Column(Integer, ForeignKey("users.id"))
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    reference_transaction_id = Column(Integer, ForeignKey("transactions.id"), nullable=True)
+    recipient_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
 
