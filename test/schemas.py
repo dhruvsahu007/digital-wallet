@@ -1,5 +1,3 @@
-#match with models.py
-
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -7,7 +5,7 @@ class UserSchema(BaseModel):
     id: int
     email: str
     password: str
-    phone_number: int
+    phone_number: str
     balance: int
     created_at: datetime
     updated_at: datetime
@@ -30,7 +28,7 @@ class TransactionSchema(BaseModel):
 
 
     class Config:
-        orm_mode = True 
+        orm_mode = True
         arbitrary_types_allowed = True
 
 
@@ -43,4 +41,4 @@ class TransferSchema(BaseModel):
     class Config:
         orm_mode = True
         arbitrary_types_allowed = True
-        
+

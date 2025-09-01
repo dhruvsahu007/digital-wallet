@@ -1,16 +1,12 @@
 from fastapi import FastAPI,Depends,HTTPException
 from sqlalchemy import Transaction
 from sqlalchemy.orm import Session
-from database import engine, get_db
-from models import User
-from schemas import UserSchema
-from database import Base
-from schemas import TransactionSchema
-from schemas import TransferSchema
+from database import engine,get_db,Base
+from models import User,Transactions
+from schemas import UserSchema,TransactionSchema,TransferSchema
 
 
 Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
 
 @app.get("/users/{user_id}", response_model=UserSchema)
