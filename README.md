@@ -40,3 +40,4 @@ uvicorn main:app --reload
 ### Fund Transfer
 
 - `GET /transfer/{transfer_id}`: Get transfer details
+

@@ -25,3 +25,4 @@ class Transactions(Base):
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
 
+
