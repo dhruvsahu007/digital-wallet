@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey,DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -12,10 +12,12 @@ class User(Base):
     password = Column(String)
     phone_number = Column(String)
     balance = Column(Integer, default=0)
-    created_at = Column(String)
-    updated_at = Column(String)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
 
     transactions = relationship("Transactions", back_populates="user")
+    recipients = relationship("Users", secondary="transactions", back_populates="senders")
+    
 
 class Transactions(Base):
     __tablename__ = "transactions"
@@ -27,6 +29,10 @@ class Transactions(Base):
     description = Column(String)
     reference_transaction_id = Column(Integer, ForeignKey("transactions.id"))
     recipient_id = Column(Integer, ForeignKey("users.id"))
-    created_at = Column(String)
-    
+    created_at = Column(DateTime)
+
     user = relationship("User", back_populates="transactions")
+    reference_transaction = relationship("Transactions", remote_side=[id])
+    recipient = relationship("User", foreign_keys=[recipient_id])
+
+
