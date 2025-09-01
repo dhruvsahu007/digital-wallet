@@ -101,14 +101,24 @@ def get_transaction_detail(transaction_id: int, db: Session = Depends(get_db)):
     transaction = db.query(Transaction).filter(Transaction.id == transaction_id).first()
     if not transaction:
         raise HTTPException(status_code=404, detail="Transaction not found")
-    return transaction
+    return {
+        "id": transaction.id,
+        "user_id": transaction.user_id,
+        "amount": transaction.amount,
+        "timestamp": transaction.timestamp
+    }
 
 @app.post("/transactions")
 def create_transaction(transaction: TransactionSchema, db: Session = Depends(get_db)):
     db.add(transaction)
     db.commit()
     db.refresh(transaction)
-    return transaction
+    return {
+        "id": transaction.id,
+        "user_id": transaction.user_id,
+        "amount": transaction.amount,
+        "timestamp": transaction.timestamp
+    }
 
 
 @app.get("/transfer/{transfer_id}")
@@ -116,5 +126,11 @@ def get_transfer(transfer_id: str, db: Session = Depends(get_db)):
     transfer = db.query(Transfer).filter(Transfer.id == transfer_id).first()
     if not transfer:
         raise HTTPException(status_code=404, detail="Transfer not found")
-    return transfer
+    return {
+        "id": transfer.id,
+        "from_user_id": transfer.from_user_id,
+        "to_user_id": transfer.to_user_id,
+        "amount": transfer.amount,
+        "timestamp": transfer.timestamp
+    }
 
