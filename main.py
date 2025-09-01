@@ -9,6 +9,14 @@ from schemas import UserSchema,TransactionSchema,TransferSchema
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
+@app.post("/users/", response_model=UserSchema)
+def create_user(user: UserSchema, db: Session = Depends(get_db)):
+    db_user = User(**user.dict())
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 @app.get("/users/{user_id}", response_model=UserSchema)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == user_id).first()
