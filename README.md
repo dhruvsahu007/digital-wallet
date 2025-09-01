@@ -2,6 +2,21 @@
 
 This is a simple FastAPI application for managing user wallets and transactions.
 
+### Installation
+
+1. Clone the repository
+2. Create a virtual environment
+3. Install the dependencies
+
+```bash
+pip install -r requirements.txt
+```
+### Running the application
+
+```bash
+uvicorn main:app --reload
+```
+
 ## Endpoints
 
 ### User Management
