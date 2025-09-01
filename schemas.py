@@ -11,6 +11,11 @@ class UserSchema(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+    class Config:
+        orm_mode = True
+        arbitrary_types_allowed = True
+
+
 class TransactionSchema(BaseModel):
     id: int
     user_id: int
@@ -26,3 +31,15 @@ class TransactionSchema(BaseModel):
     class Config:
         orm_mode = True 
         arbitrary_types_allowed = True
+
+
+class TransferSchema(BaseModel):
+    sender_user_id: int
+    recipient_user_id: int
+    amount: int
+    description: str
+
+    class Config:
+        orm_mode = True
+        arbitrary_types_allowed = True
+        

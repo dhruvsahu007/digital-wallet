@@ -18,7 +18,7 @@ class User(Base):
     transactions = relationship("Transactions", back_populates="user")
     recipients = relationship("Users", secondary="transactions", back_populates="senders")
     senders = relationship("Users", secondary="transactions", back_populates="recipients")
-    
+
     
 
 class Transactions(Base):
@@ -36,5 +36,4 @@ class Transactions(Base):
     user = relationship("User", back_populates="transactions")
     reference_transaction = relationship("Transactions", remote_side=[id])
     recipient = relationship("User", foreign_keys=[recipient_id])
-
-
+    

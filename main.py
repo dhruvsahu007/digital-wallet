@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Depends,HTTPException, Request
+from fastapi import FastAPI,Depends,HTTPException
 from sqlalchemy import Transaction
 from sqlalchemy.orm import Session
 from database import engine, get_db
@@ -6,6 +6,7 @@ from models import User
 from schemas import UserSchema
 from database import Base
 from schemas import TransactionSchema
+from schemas import TransferSchema
 
 
 Base.metadata.create_all(bind=engine)
@@ -144,7 +145,6 @@ def create_transfer(transfer: TransferSchema, db: Session = Depends(get_db)):
         "sender_new_balance": sender.balance,
         "recipient_new_balance": recipient.balance,
         "status": "completed"
-        "description": "Payment for dinner"
     }
 
 
